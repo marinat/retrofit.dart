@@ -1682,13 +1682,10 @@ ${bodyName.displayName} == null
                     "It is programmer's responsibility to make sure the ${bodyName.type} is properly serialized");
               } else {
                 blocks.add(
-                  refer(dataVar).property('fields').property('add').call([
-                    refer('MapEntry').newInstance([
-                      literal(fieldName),
-                      refer(
-                        '${bodyName.displayName}?.toMap() ?? <String,dynamic>{}',
-                      )
-                    ])
+                  refer(dataVar).property('fields').property('addAll').call([
+                    refer(
+                      '${bodyName.displayName}?.toMap() ?? <String,dynamic>{}',
+                    ).property('entries')
                   ]).statement,
                 );
               }
@@ -1716,24 +1713,18 @@ ${bodyName.displayName} == null
                   case retrofit.Parser.DartJsonMapper:
                     if (bodyName.type.nullabilitySuffix != NullabilitySuffix.question) {
                       blocks.add(
-                        refer(dataVar).property('fields').property('add').call([
-                          refer('MapEntry').newInstance([
-                            literal(fieldName),
-                            refer(
-                              '${bodyName.displayName}.toJson($toJsonCode)',
-                            )
-                          ])
+                        refer(dataVar).property('fields').property('addAll').call([
+                          refer(
+                            '${bodyName.displayName}.toJson($toJsonCode)',
+                          ).property('entries')
                         ]).statement,
                       );
                     } else {
                       blocks.add(
-                        refer(dataVar).property('fields').property('add').call([
-                          refer('MapEntry').newInstance([
-                            literal(fieldName),
-                            refer(
-                              '${bodyName.displayName}?.toJson($toJsonCode) ?? <String,dynamic>{}',
-                            )
-                          ])
+                        refer(dataVar).property('fields').property('addAll').call([
+                          refer(
+                            '${bodyName.displayName}?.toJson($toJsonCode) ?? <String,dynamic>{}',
+                          ).property('entries')
                         ]).statement,
                       );
                     }
@@ -1741,25 +1732,19 @@ ${bodyName.displayName} == null
                   case retrofit.Parser.FlutterCompute:
                     if (bodyName.type.nullabilitySuffix != NullabilitySuffix.question) {
                       blocks.add(
-                        refer(dataVar).property('fields').property('add').call([
-                          refer('MapEntry').newInstance([
-                            literal(fieldName),
-                            refer(
-                              'await compute(serialize${_displayString(bodyName.type)}, ${bodyName.displayName})',
-                            )
-                          ])
+                        refer(dataVar).property('fields').property('addAll').call([
+                          refer(
+                            'await compute(serialize${_displayString(bodyName.type)}, ${bodyName.displayName})',
+                          ).property('entries')
                         ]).statement,
                       );
                     } else {
                       blocks.add(
-                        refer(dataVar).property('fields').property('add').call([
-                          refer('MapEntry').newInstance([
-                            literal(fieldName),
-                            refer('''${bodyName.displayName} == null
+                        refer(dataVar).property('fields').property('addAll').call([
+                          refer('''${bodyName.displayName} == null
                       ? <String, dynamic>{}
                       : await compute(serialize${_displayString(bodyName.type)}, ${bodyName.displayName})
-                  ''')
-                          ])
+                  ''').property('entries')
                         ]).statement,
                       );
                     }
