@@ -1683,9 +1683,11 @@ ${bodyName.displayName} == null
               } else {
                 blocks.add(
                   refer(dataVar).property('fields').property('addAll').call([
-                    refer(
-                      '${bodyName.displayName}?.toMap() ?? <String,dynamic>{}',
-                    ).property('entries')
+                    refer('''
+                  (${bodyName.displayName}?.toMap() ?? <String,dynamic>{}).entries.map((i) => MapEntry(
+                i.key,
+                i.value.toString()
+                  ''')
                   ]).statement,
                 );
               }
@@ -1714,17 +1716,21 @@ ${bodyName.displayName} == null
                     if (bodyName.type.nullabilitySuffix != NullabilitySuffix.question) {
                       blocks.add(
                         refer(dataVar).property('fields').property('addAll').call([
-                          refer(
-                            '${bodyName.displayName}.toJson($toJsonCode)',
-                          ).property('entries')
+                          refer('''
+                  ${bodyName.displayName}.toJson($toJsonCode).entries.map((i) => MapEntry(
+                i.key,
+                i.value.toString()
+                  ''')
                         ]).statement,
                       );
                     } else {
                       blocks.add(
                         refer(dataVar).property('fields').property('addAll').call([
-                          refer(
-                            '${bodyName.displayName}?.toJson($toJsonCode) ?? <String,dynamic>{}',
-                          ).property('entries')
+                          refer('''
+                  (${bodyName.displayName}?.toJson($toJsonCode) ?? <String,dynamic>{}).entries.map((i) => MapEntry(
+                i.key,
+                i.value.toString()
+                  ''')
                         ]).statement,
                       );
                     }
@@ -1733,18 +1739,23 @@ ${bodyName.displayName} == null
                     if (bodyName.type.nullabilitySuffix != NullabilitySuffix.question) {
                       blocks.add(
                         refer(dataVar).property('fields').property('addAll').call([
-                          refer(
-                            'await compute(serialize${_displayString(bodyName.type)}, ${bodyName.displayName})',
-                          ).property('entries')
+                          refer('''
+                  await compute(serialize${_displayString(bodyName.type)}, ${bodyName.displayName}).entries.map((i) => MapEntry(
+                i.key,
+                i.value.toString()
+                  ''')
                         ]).statement,
                       );
                     } else {
                       blocks.add(
                         refer(dataVar).property('fields').property('addAll').call([
-                          refer('''${bodyName.displayName} == null
+                          refer('''
+                  (${bodyName.displayName} == null
                       ? <String, dynamic>{}
-                      : await compute(serialize${_displayString(bodyName.type)}, ${bodyName.displayName})
-                  ''').property('entries')
+                      : await compute(serialize${_displayString(bodyName.type)}, ${bodyName.displayName})).entries.map((i) => MapEntry(
+                i.key,
+                i.value.toString()
+                  ''')
                         ]).statement,
                       );
                     }
