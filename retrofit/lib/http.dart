@@ -300,11 +300,13 @@ class Part {
     this.name,
     this.fileName,
     this.contentType,
+    this.body,
   });
 
   @Deprecated('future release')
   final String? value;
   final String? name;
+  final bool? body;
 
   /// If this field is a file, optionally specify it's name. otherwise the name
   /// will be derived from the actual file.
