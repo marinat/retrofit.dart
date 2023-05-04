@@ -14,7 +14,10 @@ dependencies:
   code_builder: ^4.4.0
   dart_style: ^2.2.5
   dio: ^5.0.0
-  retrofit: ^4.0.1
+  retrofit:
+    git:
+      url: https://github.com/marinat/retrofit.dart.git
+      path: retrofit
   source_gen: ^1.2.7
   tuple: ^2.0.1
 
